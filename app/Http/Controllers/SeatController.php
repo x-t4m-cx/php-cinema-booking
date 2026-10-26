@@ -19,6 +19,8 @@ class SeatController extends Controller
      */
     public function create(Hall $hall): View
     {
+        $this->authorize('create', Seat::class);
+
         return view('seats.create', [
             'hall' => $hall,
             'seat' => new Seat(['hall_id' => $hall->id, 'is_active' => true]),
@@ -30,6 +32,8 @@ class SeatController extends Controller
      */
     public function store(StoreSeatRequest $request, Hall $hall): RedirectResponse
     {
+        $this->authorize('create', Seat::class);
+
         $seat = $this->seats->create($hall, $request->validated());
 
         return redirect()
@@ -52,6 +56,8 @@ class SeatController extends Controller
      */
     public function edit(Seat $seat): View
     {
+        $this->authorize('update', $seat);
+
         return view('seats.edit', [
             'hall' => $seat->hall,
             'seat' => $seat,
@@ -63,6 +69,8 @@ class SeatController extends Controller
      */
     public function update(UpdateSeatRequest $request, Seat $seat): RedirectResponse
     {
+        $this->authorize('update', $seat);
+
         $this->seats->update($seat, $request->validated());
 
         return redirect()
@@ -75,6 +83,8 @@ class SeatController extends Controller
      */
     public function destroy(Seat $seat): RedirectResponse
     {
+        $this->authorize('delete', $seat);
+
         $hall = $seat->hall;
 
         $this->seats->delete($seat);

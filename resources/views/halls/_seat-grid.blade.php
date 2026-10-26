@@ -9,8 +9,13 @@
                 <div class="hall__row-seats">
                     @foreach ($cells as $cell)
                         @php($seat = $cell['seat'])
+                        @can('update', $seat)
+                            @php($seatUrl = route('seats.edit', $seat))
+                        @else
+                            @php($seatUrl = route('seats.show', $seat))
+                        @endcan
                         <a class="seat {{ $seat->is_active ? 'seat--active' : 'seat--inactive' }} {{ $cell['booked'] ? 'seat--booked' : '' }}"
-                           href="{{ route('seats.edit', $seat) }}"
+                           href="{{ $seatUrl }}"
                            title="{{ $seat->label }}{{ $cell['booked'] ? ' · есть брони' : '' }}">
                             {{ $seat->seat_number }}
                         </a>

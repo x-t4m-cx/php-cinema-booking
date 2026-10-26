@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 class MovieService
 {
     /**
-     * @param  array{title: string, description?: string|null, duration_minutes: int}  $data
+     * @param  array{title: string, description?: string|null, duration_minutes: int, is_active?: bool}  $data
      */
     public function create(array $data): Movie
     {
@@ -19,7 +19,7 @@ class MovieService
     }
 
     /**
-     * @param  array{title: string, description?: string|null, duration_minutes: int}  $data
+     * @param  array{title: string, description?: string|null, duration_minutes: int, is_active?: bool}  $data
      */
     public function update(Movie $movie, array $data): Movie
     {

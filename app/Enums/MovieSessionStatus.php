@@ -12,4 +12,15 @@ enum MovieSessionStatus: string
 
     /** Cancelled by the cinema; existing bookings are refunded. */
     case Cancelled = 'cancelled';
+
+    /**
+     * Human readable status for the interface.
+     */
+    public function label(): string
+    {
+        return match ($this) {
+            self::Scheduled => 'активен',
+            self::Cancelled => 'отменён',
+        };
+    }
 }

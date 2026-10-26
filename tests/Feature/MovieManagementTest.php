@@ -4,12 +4,20 @@ namespace Tests\Feature;
 
 use App\Models\Hall;
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MovieManagementTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->actingAs(User::factory()->admin()->create());
+    }
 
     public function test_movies_index_lists_movies(): void
     {
@@ -79,7 +87,6 @@ class MovieManagementTest extends TestCase
         $movie->sessions()->create([
             'hall_id' => $hall->id,
             'starts_at' => now()->addDay(),
-            'ends_at' => now()->addDay()->addMinutes(90),
             'price' => 300,
         ]);
 

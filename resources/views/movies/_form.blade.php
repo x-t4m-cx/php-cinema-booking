@@ -27,6 +27,19 @@
         @error('description')<p class="field__error">{{ $message }}</p>@enderror
     </div>
 
+    @can('update', $movie)
+        <div class="field">
+            <input type="hidden" name="is_active" value="0">
+            <label class="checkbox">
+                <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $movie->is_active ?? true))>
+                В прокате
+            </label>
+            <p class="field__hint">
+                Снятый с показа фильм остаётся в старых сеансах, но новые на него создать нельзя.
+            </p>
+        </div>
+    @endcan
+
     <div class="form__actions">
         <button class="btn btn--primary" type="submit">{{ $editing ? 'Сохранить' : 'Добавить фильм' }}</button>
         <a class="btn btn--ghost" href="{{ $editing ? route('movies.show', $movie) : route('movies.index') }}">Отмена</a>
