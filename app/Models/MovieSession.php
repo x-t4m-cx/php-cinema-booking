@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\MovieSessionStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,18 +18,59 @@ use Illuminate\Support\Carbon;
  * @property int $movie_id
  * @property int $hall_id
  * @property Carbon $starts_at
- * @property Carbon $ends_at
  * @property string $price
  * @property MovieSessionStatus $status
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Carbon $ends_at
+ * @property-read Carbon $busy_until
  * @property-read Movie $movie
  * @property-read Hall $hall
  * @property-read Collection<int, Booking> $bookings
  */
-#[Fillable(['movie_id', 'hall_id', 'starts_at', 'ends_at', 'price', 'status'])]
+#[Fillable(['movie_id', 'hall_id', 'starts_at', 'price', 'status'])]
 class MovieSession extends Model
 {
+    /**
+     * Minutes reserved between sessions for cleaning the hall and seating the
+     * next audience.
+     */
+    public const BUFFER_MINUTES = 20;
+
+    /**
+     * Minimum time before the start when a new session may be scheduled.
+     */
+    public const MIN_LEAD_MINUTES = 15;
+
+    /**
+     * Whether the session has already ended.
+     *
+     * Finished sessions stay in the history but are inactive: they are not
+     * shown to buyers and cannot be edited or cancelled.
+     */
+    public function isFinished(): bool
+    {
+        return $this->ends_at->isPast();
+    }
+
+    /**
+     * End of the film: the start plus the duration taken from the film.
+     */
+    protected function endsAt(): Attribute
+    {
+        return Attribute::get(fn (): Carbon => $this->starts_at->copy()
+            ->addMinutes((int) $this->movie->duration_minutes));
+    }
+
+    /**
+     * Moment the hall is free again: the end of the film plus the buffer.
+     */
+    protected function busyUntil(): Attribute
+    {
+        return Attribute::get(fn (): Carbon => $this->ends_at->copy()
+            ->addMinutes(self::BUFFER_MINUTES));
+    }
+
     /**
      * Attributes that should be cast.
      *
@@ -38,7 +80,6 @@ class MovieSession extends Model
     {
         return [
             'starts_at' => 'datetime',
-            'ends_at' => 'datetime',
             'price' => 'decimal:2',
             'status' => MovieSessionStatus::class,
         ];

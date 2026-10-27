@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Hall;
 use App\Models\Movie;
+use App\Models\User;
 use App\Services\HallService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -11,6 +12,13 @@ use Tests\TestCase;
 class HallManagementTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->actingAs(User::factory()->admin()->create());
+    }
 
     public function test_halls_index_shows_existing_halls(): void
     {
@@ -114,7 +122,6 @@ class HallManagementTest extends TestCase
         $session = $movie->sessions()->create([
             'hall_id' => $hall->id,
             'starts_at' => now()->addDay(),
-            'ends_at' => now()->addDay()->addMinutes(90),
             'price' => 300,
         ]);
         $booking = $session->bookings()->create([

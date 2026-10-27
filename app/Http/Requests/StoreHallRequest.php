@@ -21,6 +21,7 @@ class StoreHallRequest extends FormRequest
             'name' => ['required', 'string', 'max:100', Rule::unique('halls', 'name')],
             'rows_count' => ['required', 'integer', 'min:1', 'max:50'],
             'seats_per_rows' => ['required', 'integer', 'min:1', 'max:60'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 

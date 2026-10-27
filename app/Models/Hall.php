@@ -16,15 +16,28 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property int $rows_count
  * @property int $seats_per_rows
+ * @property bool $is_active
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Collection<int, Seat> $seats
  * @property-read Collection<int, MovieSession> $sessions
  * @property-read Collection<int, Booking> $bookings
  */
-#[Fillable(['name', 'rows_count', 'seats_per_rows'])]
+#[Fillable(['name', 'rows_count', 'seats_per_rows', 'is_active'])]
 class Hall extends Model
 {
+    /**
+     * Attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
+
     /**
      * Seats that belong to the hall.
      *

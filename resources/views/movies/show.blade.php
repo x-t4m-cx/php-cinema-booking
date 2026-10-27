@@ -8,15 +8,21 @@
             <h1 class="page-title">{{ $movie->title }}</h1>
             <p class="page-subtitle">Карточка фильма</p>
         </div>
-        <div class="page-head__actions">
-            <a class="btn btn--primary" href="{{ route('movies.edit', $movie) }}">Изменить</a>
-            <form class="inline" method="POST" action="{{ route('movies.destroy', $movie) }}"
-                  onsubmit="return confirm('Удалить фильм «{{ $movie->title }}»?');">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn--danger" type="submit">Удалить</button>
-            </form>
-        </div>
+        @canany(['update', 'delete'], $movie)
+            <div class="page-head__actions">
+                @can('update', $movie)
+                    <a class="btn btn--primary" href="{{ route('movies.edit', $movie) }}">Изменить</a>
+                @endcan
+                @can('delete', $movie)
+                    <form class="inline" method="POST" action="{{ route('movies.destroy', $movie) }}"
+                          onsubmit="return confirm('Удалить фильм «{{ $movie->title }}»?');">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn--danger" type="submit">Удалить</button>
+                    </form>
+                @endcan
+            </div>
+        @endcanany
     </div>
 
     @include('partials.errors')
@@ -37,6 +43,12 @@
         <p class="prose">{{ $movie->description ?: 'Описание не заполнено.' }}</p>
 
         <dl class="details">
+            <dt>Статус</dt>
+            <dd>
+                <span class="badge {{ $movie->is_active ? 'badge--ok' : 'badge--muted' }}">
+                    {{ $movie->is_active ? 'в прокате' : 'снят с показа' }}
+                </span>
+            </dd>
             <dt>Добавлен</dt>
             <dd>{{ $movie->created_at->format('d.m.Y H:i') }}</dd>
             <dt>Обновлён</dt>

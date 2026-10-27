@@ -66,6 +66,7 @@ a {
 
 .topnav {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
 }
 
@@ -87,6 +88,43 @@ a {
     background: #fbbf24;
     color: #14171f;
     font-weight: 600;
+}
+
+.topbar__account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.topbar__name {
+    color: #e2e8f0;
+}
+
+.topbar__login {
+    border-color: #fbbf24;
+    background: #fbbf24;
+    color: #14171f;
+    text-decoration: none;
+}
+
+.topbar__login:hover {
+    border-color: #f59e0b;
+    background: #f59e0b;
+}
+
+.topbar__register,
+.topbar__logout {
+    border-color: rgba(255, 255, 255, .18);
+    background: transparent;
+    color: #cbd5e1;
+}
+
+.topbar__register:hover,
+.topbar__logout:hover {
+    border-color: rgba(255, 255, 255, .35);
+    background: rgba(255, 255, 255, .08);
+    color: #fff;
 }
 
 /* Каркас страницы */
@@ -339,6 +377,12 @@ a {
     margin: 0;
 }
 
+.role-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 /* Бейджи и статистика */
 
 .badge {
@@ -361,6 +405,29 @@ a {
 .badge--muted {
     background: #eef1f5;
     color: #64748b;
+}
+
+.role {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.role--admin {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.role--manager {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.role--buyer {
+    background: #dbeafe;
+    color: #1e40af;
 }
 
 .stats {
@@ -427,6 +494,12 @@ a {
     outline: none;
     border-color: var(--brand);
     box-shadow: 0 0 0 3px rgba(194, 65, 12, .15);
+}
+
+.field__input--compact {
+    width: auto;
+    padding: 6px 10px;
+    font-size: 13px;
 }
 
 .field__hint {
@@ -609,6 +682,211 @@ a {
     align-items: center;
 }
 
+/* Расписание */
+
+.schedule-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.date-strip {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.date-strip__arrow {
+    flex: 0 0 auto;
+    align-self: center;
+}
+
+.btn.is-disabled {
+    border-color: var(--line);
+    background: transparent;
+    color: #b6bec8;
+    cursor: default;
+    pointer-events: none;
+}
+
+.date-chip {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 66px;
+    padding: 8px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 13px;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: border-color .15s, background-color .15s, color .15s;
+}
+
+.date-chip:hover {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+}
+
+.date-chip.is-today {
+    border-color: var(--brand);
+}
+
+.date-chip.is-active {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: #fff;
+}
+
+.date-chip__weekday {
+    color: var(--ink-soft);
+    font-size: 11px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.date-chip__date {
+    font-weight: 600;
+}
+
+.date-chip__today {
+    color: var(--brand);
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.date-chip.is-active .date-chip__weekday,
+.date-chip.is-active .date-chip__today {
+    color: #ffe4d5;
+}
+
+.schedule-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.schedule-day + .schedule-day {
+    margin-top: 22px;
+}
+
+.schedule-day__title {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.movie-block + .movie-block {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+}
+
+.movie-block__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.movie-block__title {
+    margin: 0;
+    font-size: 17px;
+}
+
+.movie-block__duration {
+    color: var(--ink-soft);
+    font-size: 13px;
+}
+
+.session-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.session-card {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 132px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color .15s, background-color .15s;
+}
+
+.session-card:hover {
+    border-color: var(--brand);
+    background: var(--brand-soft);
+}
+
+.session-card__time {
+    font-weight: 600;
+}
+
+.session-card__meta {
+    color: var(--ink-soft);
+    font-size: 12px;
+}
+
+.session-card__price {
+    color: var(--brand);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.schedule-empty__action {
+    margin: 14px 0 0;
+}
+
+/* Занятость зала */
+
+.slots {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.slot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+}
+
+.slot:last-child {
+    border-bottom: none;
+}
+
+.slot__time {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.slot__buffer {
+    color: var(--ink-soft);
+    font-size: 13px;
+}
+
 /* Пагинация */
 
 .pager {
@@ -643,6 +921,33 @@ a {
     color: var(--ink-soft);
 }
 
+/* Вход */
+
+.auth {
+    max-width: 440px;
+    margin: 12px auto 0;
+}
+
+.auth__card {
+    padding: 28px;
+}
+
+.auth__title {
+    margin: 0 0 6px;
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.auth__hint {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.auth__demo {
+    margin-top: 8px;
+}
+
 /* Адаптивность */
 
 @media (max-width: 720px) {
@@ -651,6 +956,10 @@ a {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+    }
+
+    .topbar__account {
+        flex-wrap: wrap;
     }
 
     .page {

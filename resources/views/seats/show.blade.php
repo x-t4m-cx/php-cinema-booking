@@ -10,15 +10,17 @@
                 Зал <a class="link" href="{{ route('halls.show', $seat->hall) }}">{{ $seat->hall->name }}</a>
             </p>
         </div>
-        <div class="page-head__actions">
-            <a class="btn btn--primary" href="{{ route('seats.edit', $seat) }}">Изменить</a>
-            <form class="inline" method="POST" action="{{ route('seats.destroy', $seat) }}"
-                  onsubmit="return confirm('Удалить место {{ $seat->label }}?');">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn--danger" type="submit">Удалить</button>
-            </form>
-        </div>
+        @can('update', $seat)
+            <div class="page-head__actions">
+                <a class="btn btn--primary" href="{{ route('seats.edit', $seat) }}">Изменить</a>
+                <form class="inline" method="POST" action="{{ route('seats.destroy', $seat) }}"
+                      onsubmit="return confirm('Удалить место {{ $seat->label }}?');">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn--danger" type="submit">Удалить</button>
+                </form>
+            </div>
+        @endcan
     </div>
 
     @include('partials.errors')

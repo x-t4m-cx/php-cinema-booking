@@ -21,6 +21,7 @@ class StoreMovieRequest extends FormRequest
             'title' => ['required', 'string', 'max:255', Rule::unique('movies', 'title')],
             'description' => ['nullable', 'string', 'max:5000'],
             'duration_minutes' => ['required', 'integer', 'min:1', 'max:600'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        /*
+         * Demo accounts, one per role. They share the password "password",
+         * which is also shown on the local sign-in page.
+         */
+        $accounts = [
+            ['name' => 'Администратор', 'email' => 'admin@cinema.test', 'role' => UserRole::Admin],
+            ['name' => 'Менеджер', 'email' => 'manager@cinema.test', 'role' => UserRole::Manager],
+            ['name' => 'Покупатель', 'email' => 'buyer@cinema.test', 'role' => UserRole::Buyer],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($accounts as $account) {
+            User::query()->updateOrCreate(
+                ['email' => $account['email']],
+                [
+                    'name' => $account['name'],
+                    'role' => $account['role'],
+                    'password' => 'password',
+                ],
+            );
+        }
     }
 }

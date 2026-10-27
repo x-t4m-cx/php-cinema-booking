@@ -16,12 +16,13 @@ use Illuminate\Support\Carbon;
  * @property string $title
  * @property string|null $description
  * @property int $duration_minutes
+ * @property bool $is_active
  * @property-read string $duration_label
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Collection<int, MovieSession> $sessions
  */
-#[Fillable(['title', 'description', 'duration_minutes'])]
+#[Fillable(['title', 'description', 'duration_minutes', 'is_active'])]
 class Movie extends Model
 {
     /**
@@ -34,6 +35,18 @@ class Movie extends Model
             intdiv((int) $this->duration_minutes, 60),
             (int) $this->duration_minutes % 60,
         ));
+    }
+
+    /**
+     * Attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
     }
 
     /**

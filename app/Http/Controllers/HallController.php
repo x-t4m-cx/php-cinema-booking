@@ -31,6 +31,8 @@ class HallController extends Controller
      */
     public function create(): View
     {
+        $this->authorize('create', Hall::class);
+
         return view('halls.create', [
             'hall' => new Hall,
         ]);
@@ -41,6 +43,8 @@ class HallController extends Controller
      */
     public function store(StoreHallRequest $request): RedirectResponse
     {
+        $this->authorize('create', Hall::class);
+
         $hall = $this->halls->create($request->validated());
 
         return redirect()
@@ -65,6 +69,8 @@ class HallController extends Controller
      */
     public function edit(Hall $hall): View
     {
+        $this->authorize('update', $hall);
+
         return view('halls.edit', [
             'hall' => $hall,
         ]);
@@ -75,6 +81,8 @@ class HallController extends Controller
      */
     public function update(UpdateHallRequest $request, Hall $hall): RedirectResponse
     {
+        $this->authorize('update', $hall);
+
         $this->halls->update($hall, $request->validated());
 
         return redirect()
@@ -87,6 +95,8 @@ class HallController extends Controller
      */
     public function destroy(Hall $hall): RedirectResponse
     {
+        $this->authorize('delete', $hall);
+
         $this->halls->delete($hall);
 
         return redirect()

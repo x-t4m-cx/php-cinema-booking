@@ -29,6 +29,17 @@
         </div>
     </div>
 
+    <div class="field">
+        <input type="hidden" name="is_active" value="0">
+        <label class="checkbox">
+            <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $hall->is_active ?? true))>
+            Зал открыт
+        </label>
+        <p class="field__hint">
+            Закрытый зал остаётся в старых сеансах, но новые сеансы в нём создать нельзя.
+        </p>
+    </div>
+
     @if ($editing)
         <p class="field__hint">
             При изменении размеров сетка пересобирается: недостающие места создаются, лишние удаляются.

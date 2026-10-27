@@ -31,6 +31,8 @@ class MovieController extends Controller
      */
     public function create(): View
     {
+        $this->authorize('create', Movie::class);
+
         return view('movies.create', [
             'movie' => new Movie,
         ]);
@@ -41,6 +43,8 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request): RedirectResponse
     {
+        $this->authorize('create', Movie::class);
+
         $movie = $this->movies->create($request->validated());
 
         return redirect()
@@ -63,6 +67,8 @@ class MovieController extends Controller
      */
     public function edit(Movie $movie): View
     {
+        $this->authorize('update', $movie);
+
         return view('movies.edit', [
             'movie' => $movie,
         ]);
@@ -73,6 +79,8 @@ class MovieController extends Controller
      */
     public function update(UpdateMovieRequest $request, Movie $movie): RedirectResponse
     {
+        $this->authorize('update', $movie);
+
         $this->movies->update($movie, $request->validated());
 
         return redirect()
@@ -85,6 +93,8 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie): RedirectResponse
     {
+        $this->authorize('delete', $movie);
+
         $this->movies->delete($movie);
 
         return redirect()

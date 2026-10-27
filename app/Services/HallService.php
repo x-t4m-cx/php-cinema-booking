@@ -17,7 +17,7 @@ class HallService
     /**
      * Create a hall together with its full seat grid.
      *
-     * @param  array{name: string, rows_count: int, seats_per_rows: int}  $data
+     * @param  array{name: string, rows_count: int, seats_per_rows: int, is_active?: bool}  $data
      */
     public function create(array $data): Hall
     {
@@ -32,7 +32,7 @@ class HallService
     /**
      * Update a hall and resize its seat grid.
      *
-     * @param  array{name: string, rows_count: int, seats_per_rows: int}  $data
+     * @param  array{name: string, rows_count: int, seats_per_rows: int, is_active?: bool}  $data
      */
     public function update(Hall $hall, array $data): Hall
     {

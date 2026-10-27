@@ -8,18 +8,23 @@
             <h1 class="page-title">{{ $hall->name }}</h1>
             <p class="page-subtitle">
                 {{ $hall->rows_count }} рядов · {{ $hall->seats_per_rows }} мест в ряду · {{ $stats['total'] }} мест всего
+                @unless ($hall->is_active)
+                    · <span class="badge badge--muted">закрыт</span>
+                @endunless
             </p>
         </div>
-        <div class="page-head__actions">
-            <a class="btn btn--primary" href="{{ route('halls.seats.create', $hall) }}">Добавить место</a>
-            <a class="btn" href="{{ route('halls.edit', $hall) }}">Изменить зал</a>
-            <form class="inline" method="POST" action="{{ route('halls.destroy', $hall) }}"
-                  onsubmit="return confirm('Удалить зал «{{ $hall->name }}» вместе с местами?');">
-                @csrf
-                @method('DELETE')
-                <button class="btn btn--danger" type="submit">Удалить</button>
-            </form>
-        </div>
+        @can('update', $hall)
+            <div class="page-head__actions">
+                <a class="btn btn--primary" href="{{ route('halls.seats.create', $hall) }}">Добавить место</a>
+                <a class="btn" href="{{ route('halls.edit', $hall) }}">Изменить зал</a>
+                <form class="inline" method="POST" action="{{ route('halls.destroy', $hall) }}"
+                      onsubmit="return confirm('Удалить зал «{{ $hall->name }}» вместе с местами?');">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn--danger" type="submit">Удалить</button>
+                </form>
+            </div>
+        @endcan
     </div>
 
     @include('partials.errors')
@@ -54,8 +59,12 @@
         </div>
 
         @if (empty($grid))
-            <p class="empty">У зала ещё нет мест.
-                <a class="link" href="{{ route('halls.edit', $hall) }}">Задайте размеры зала</a>, чтобы создать сетку.</p>
+            <p class="empty">
+                У зала ещё нет мест.
+                @can('update', $hall)
+                    <a class="link" href="{{ route('halls.edit', $hall) }}">Задайте размеры зала</a>, чтобы создать сетку.
+                @endcan
+            </p>
         @else
             @include('halls._seat-grid', ['grid' => $grid])
 

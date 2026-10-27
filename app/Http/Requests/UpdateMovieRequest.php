@@ -26,6 +26,7 @@ class UpdateMovieRequest extends FormRequest
             ],
             'description' => ['nullable', 'string', 'max:5000'],
             'duration_minutes' => ['required', 'integer', 'min:1', 'max:600'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 

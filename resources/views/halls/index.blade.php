@@ -8,13 +8,19 @@
             <h1 class="page-title">Залы</h1>
             <p class="page-subtitle">Нажмите на название зала, чтобы открыть сетку мест.</p>
         </div>
-        <a class="btn btn--primary" href="{{ route('halls.create') }}">Добавить зал</a>
+        @can('create', App\Models\Hall::class)
+            <a class="btn btn--primary" href="{{ route('halls.create') }}">Добавить зал</a>
+        @endcan
     </div>
 
     <div class="card">
         @if ($halls->isEmpty())
-            <p class="empty">Залов пока нет.
-                <a class="link" href="{{ route('halls.create') }}">Создайте первый зал</a>.</p>
+            <p class="empty">
+                Залов пока нет.
+                @can('create', App\Models\Hall::class)
+                    <a class="link" href="{{ route('halls.create') }}">Создайте первый зал</a>.
+                @endcan
+            </p>
         @else
             <table class="table">
                 <thead>
@@ -32,6 +38,9 @@
                         <tr>
                             <td>
                                 <a class="link link--strong" href="{{ route('halls.show', $hall) }}">{{ $hall->name }}</a>
+                                @unless ($hall->is_active)
+                                    <span class="badge badge--muted">закрыт</span>
+                                @endunless
                             </td>
                             <td class="nowrap">{{ $hall->rows_count }}</td>
                             <td class="nowrap">{{ $hall->seats_per_rows }}</td>
@@ -39,13 +48,17 @@
                             <td><span class="badge">{{ $hall->sessions_count }}</span></td>
                             <td class="table__actions">
                                 <a class="btn btn--sm btn--primary" href="{{ route('halls.show', $hall) }}">Сетка мест</a>
-                                <a class="btn btn--sm" href="{{ route('halls.edit', $hall) }}">Изменить</a>
-                                <form class="inline" method="POST" action="{{ route('halls.destroy', $hall) }}"
-                                      onsubmit="return confirm('Удалить зал «{{ $hall->name }}» вместе с местами?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn--sm btn--danger" type="submit">Удалить</button>
-                                </form>
+                                @can('update', $hall)
+                                    <a class="btn btn--sm" href="{{ route('halls.edit', $hall) }}">Изменить</a>
+                                @endcan
+                                @can('delete', $hall)
+                                    <form class="inline" method="POST" action="{{ route('halls.destroy', $hall) }}"
+                                          onsubmit="return confirm('Удалить зал «{{ $hall->name }}» вместе с местами?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn--sm btn--danger" type="submit">Удалить</button>
+                                    </form>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach
